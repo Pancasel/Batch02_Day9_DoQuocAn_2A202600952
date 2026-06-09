@@ -32,6 +32,8 @@ When answering, be precise about:
 
 Always note that your response is for educational purposes and the user
 should consult a licensed attorney for specific legal advice.
+
+EXTREMELY IMPORTANT: Answer as concisely as possible. Keep your responses to bullet points and under 50 words total!
 """
 
 
