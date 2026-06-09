@@ -8,6 +8,7 @@ calculate damages — but the orchestration is manual (one tool-call loop).
 import asyncio
 import os
 import sys
+sys.stdout.reconfigure(encoding='utf-8') # Thêm dòng này
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -81,6 +82,16 @@ LEGAL_KNOWLEDGE = [
             "public interest (Winter v. Natural Resources Defense Council, 2008)."
         ),
     },
+    {
+        "id": "labor_law",
+        "keywords": ["lao động", "sa thải", "hợp đồng lao động", "labor", "termination"],
+        "text": (
+            "Theo Bộ luật Lao động Việt Nam 2019, người sử dụng lao động có thể "
+            "đơn phương chấm dứt hợp đồng trong các trường hợp: (1) người lao động "
+            "thường xuyên không hoàn thành công việc; (2) bị ốm đau, tai nạn đã điều trị "
+            "12 tháng chưa khỏi; (3) thiên tai, hỏa hoạn; (4) người lao động đủ tuổi nghỉ hưu."
+        ),
+    },
 ]
 
 
@@ -134,8 +145,21 @@ def calculate_damages(breach_type: str, contract_value: float) -> str:
         f"  Total estimated exposure: ${total:,.2f}"
     )
 
+@tool
+def check_statute_of_limitations(case_type: str) -> str:
+    """Check the statute of limitations based on the case type.
+    
+    Args:
+        case_type: The type of case (contract, tort, property)
+    """
+    limits = {
+        "contract": "4 years (UCC § 2-725)",
+        "tort": "2-3 years depending on state",
+        "property": "5 years",
+    }
+    return limits.get(case_type.lower(), "Unknown")
 
-TOOLS = [search_legal_database, calculate_damages]
+TOOLS = [search_legal_database, calculate_damages, check_statute_of_limitations]
 
 QUESTION = "What are the legal consequences if a company breaches a non-disclosure agreement?"
 
