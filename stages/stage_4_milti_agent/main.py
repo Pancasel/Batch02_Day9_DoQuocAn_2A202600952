@@ -386,6 +386,11 @@ async def main():
     print("  ./start_all.sh && python test_client.py")
     print("=" * 70)
 
+    # Lưu graph ra file ảnh để dễ xem (thay vì dùng IPython display)
+    with open("graph.png", "wb") as f:
+        f.write(graph.get_graph().draw_mermaid_png())
+    print("\n[Đã lưu sơ đồ hệ thống vào file graph.png]")
+
 
 if __name__ == "__main__":
     load_dotenv()
